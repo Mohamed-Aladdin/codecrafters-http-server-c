@@ -7,6 +7,8 @@
 #include <errno.h>
 #include <unistd.h>
 
+#define BUFFER_SIZE 1024
+
 int main() {
 	// Disable output buffering
 	setbuf(stdout, NULL);
@@ -53,13 +55,38 @@ int main() {
 	printf("Waiting for a client to connect...\n");
 	client_addr_len = sizeof(client_addr);
 
-	int fd = accept(server_fd, (struct sockaddr *) &client_addr, &client_addr_len);
+	const int client_fd =
+		accept(server_fd, (struct sockaddr *) &client_addr, &client_addr_len);
+	if (client_fd < 0) {
+		printf("Accept failed: %s \n", strerror(errno));
+		return 1;
+	}
 	printf("Client connected\n");
 
-	char *reply = "HTTP/1.1 200 OK\r\n\r\n";
-	int bytes_sent = send(fd, reply, strlen(reply), 0);
+	char req_buffer[BUFFER_SIZE];
+
+	if (read(client_fd, req_buffer, BUFFER_SIZE) < 0) {
+		printf("Read failed: %s \n", strerror(errno));
+		return 1;
+	} else {
+		printf("Request from client: %s\n", req_buffer);
+	}
+
+	char *path = strtok(req_buffer, " ");
+	path = strtok(NULL, " ");
+
+	char *res_ok = "HTTP/1.1 200 OK\r\n\r\n";
+	char *res_not_found = "HTTP/1.1 404 Not Found\r\n\r\n";
+
+	char *res = (strcmp(path, "/") == 0) ? res_ok : res_not_found;
+	int bytes_sent = send(client_fd, res, strlen(res), 0);
+
+	if (bytes_sent < 0) {
+		printf("Error: %s \n", strerror(errno));
+	}
 
 	close(server_fd);
+	close(client_fd);
 
 	return 0;
 }
