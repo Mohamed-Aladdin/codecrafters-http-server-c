@@ -64,6 +64,7 @@ int main() {
 	printf("Client connected\n");
 
 	char req_buffer[BUFFER_SIZE];
+	char res[BUFFER_SIZE];
 
 	if (read(client_fd, req_buffer, BUFFER_SIZE) < 0) {
 		printf("Read failed: %s \n", strerror(errno));
@@ -78,7 +79,16 @@ int main() {
 	char *res_ok = "HTTP/1.1 200 OK\r\n\r\n";
 	char *res_not_found = "HTTP/1.1 404 Not Found\r\n\r\n";
 
-	char *res = (strcmp(path, "/") == 0) ? res_ok : res_not_found;
+	if (strncmp(path, "/echo/", 6) == 0) {
+		char *content = path + 6;
+		sprintf(res,
+			"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+            		"%ld\r\n\r\n%s",
+	    		strlen(content), content);
+	} else {
+		snprintf(res, sizeof(res), "%s", (strcmp(path, "/") == 0) ? res_ok : res_not_found);
+	}
+
 	int bytes_sent = send(client_fd, res, strlen(res), 0);
 
 	if (bytes_sent < 0) {
