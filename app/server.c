@@ -78,13 +78,15 @@ int main() {
 
 	char *res_ok = "HTTP/1.1 200 OK\r\n\r\n";
 	char *res_not_found = "HTTP/1.1 404 Not Found\r\n\r\n";
+	char *format = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+                        "%ld\r\n\r\n%s";
 
-	if (strncmp(path, "/echo/", 6) == 0) {
+	if (strncmp(path, "/user-agent", 11) == 0) {
+		char *userAgent = strtok(0, "\r\n") + 12;
+		sprintf(res, format, strlen(userAgent), userAgent);
+	} else if (strncmp(path, "/echo/", 6) == 0) {
 		char *content = path + 6;
-		sprintf(res,
-			"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
-            		"%ld\r\n\r\n%s",
-	    		strlen(content), content);
+		sprintf(res, format, strlen(content), content);
 	} else {
 		snprintf(res, sizeof(res), "%s", (strcmp(path, "/") == 0) ? res_ok : res_not_found);
 	}
