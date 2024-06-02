@@ -40,9 +40,10 @@ void *request_handler(void *cfd) {
 
 			if (file_fd) {
 				char file_buff[BUFFER_SIZE];
-				int br = fread(file_buff, 1, 4098, file_fd);
+				int br = fread(file_buff, 1, BUFFER_SIZE, file_fd);
+				fclose(file_fd);
 
-				sprintf(res,
+				snprintf(res, sizeof(res),
             				"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: "
             				"%d\r\n\r\n%s",
             				br, file_buff);
