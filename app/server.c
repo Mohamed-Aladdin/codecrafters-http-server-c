@@ -54,7 +54,11 @@ void *request_handler(void *cfd) {
 					close(client_fd);
 					return NULL;
 				}
+			} else {
+				snprintf(res, sizeof(res), "%s", res_not_found);
 			}
+		} else {
+			snprintf(res, sizeof(res), "%s", res_not_found);
 		}
 	} else if (strncmp(path, "/user-agent", 11) == 0) {
 		strtok(0, "\r\n");
