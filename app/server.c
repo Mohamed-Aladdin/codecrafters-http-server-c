@@ -10,6 +10,8 @@
 
 #define BUFFER_SIZE 1024
 
+char *dir;
+
 void *request_handler(void *cfd) {
 	int client_fd = *(int*)cfd;
 	char req_buffer[BUFFER_SIZE];
@@ -29,7 +31,24 @@ void *request_handler(void *cfd) {
 	char *format =
 		"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
 		"%ld\r\n\r\n%s";
-	if (strncmp(path, "/user-agent", 11) == 0) {
+	if (strncmp(path, "/files/", 7) == 0) {
+		char *file = strchr(path + 1, '/');
+
+		if (file) {
+			char *f_path = strcat(dir, file);
+			FILE *file_fd = fopen(f_path, "r");
+
+			if (file_fd) {
+				char file_buff[BUFFER_SIZE];
+				int br = fread(file_buff, 1, 4098, file_fd);
+
+				sprintf(res,
+            				"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: "
+            				"%d\r\n\r\n%s",
+            				br, file_buff);
+			}
+		}
+	} else if (strncmp(path, "/user-agent", 11) == 0) {
 		strtok(0, "\r\n");
 		strtok(0, "\r\n");
 		char *userAgent = strtok(0, "\r\n") + 12;
@@ -49,7 +68,10 @@ void *request_handler(void *cfd) {
 	}
 }
 
-int main() {
+int main(int argc, char **argv) {
+	if (argc >= 2 && (strncmp(argv[1], "--directory", 11) == 0)) {
+		dir = argv[2];
+	}
 	// Disable output buffering
 	setbuf(stdout, NULL);
  	setbuf(stderr, NULL);
