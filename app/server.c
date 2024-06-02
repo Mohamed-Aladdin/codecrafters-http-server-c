@@ -36,11 +36,13 @@ void *request_handler(void *cfd) {
 
 		if (file) {
 			char *f_path = strcat(dir, file);
+			snprintf(f_path, sizeof(f_path), "%s%s", dir, file);
 			FILE *file_fd = fopen(f_path, "r");
 
 			if (file_fd) {
 				char file_buff[BUFFER_SIZE];
-				int br = fread(file_buff, 1, BUFFER_SIZE, file_fd);
+				int br = fread(file_buff, 1, BUFFER_SIZE - 1, file_fd);
+				file_buff[br] = '\0';
 				fclose(file_fd);
 
 				snprintf(res, sizeof(res),
