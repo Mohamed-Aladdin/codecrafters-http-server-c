@@ -35,7 +35,7 @@ void *request_handler(void *cfd) {
 		char *file = strchr(path + 1, '/');
 
 		if (file) {
-			char *f_path = strcat(dir, file);
+			char f_path[BUFFER_SIZE];
 			snprintf(f_path, sizeof(f_path), "%s%s", dir, file);
 			FILE *file_fd = fopen(f_path, "r");
 
