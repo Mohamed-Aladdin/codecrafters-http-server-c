@@ -45,10 +45,15 @@ void *request_handler(void *cfd) {
 				file_buff[br] = '\0';
 				fclose(file_fd);
 
-				snprintf(res, sizeof(res),
+				int res_size = snprintf(res, sizeof(res),
             				"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: "
             				"%d\r\n\r\n%s",
             				br, file_buff);
+				if (res_size >= sizeof(res)) {
+					fprintf(stderr, "Response buffer overflow detected\n");
+					close(client_fd);
+					return NULL;
+				}
 			}
 		}
 	} else if (strncmp(path, "/user-agent", 11) == 0) {
