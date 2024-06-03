@@ -52,7 +52,7 @@ void *request_handler(void *cfd) {
 				fclose(file_fd);
 				snprintf(res, sizeof(res), "%s", res_created);
 			} else {
-				printf(Hoiiiiiiiiiiiiiiiiiii);
+				printf("Hoiiiiiiiiiiiiiiiiiii");
 				snprintf(res, sizeof(res), "%s", res_not_found);
 			}
 		}
