@@ -39,6 +39,7 @@ void *request_handler(void *cfd) {
 		snprintf(f_path, sizeof(f_path), "%s/%s", dir, file);
 
 		char *body = strstr(req_buffer, "\r\n\r\n");
+		printf("Body: %s\n", body);
 
 		if (!body) {
 			snprintf(res, sizeof(res), "%s", res_bad_request);
