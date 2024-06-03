@@ -40,8 +40,8 @@ void *request_handler(void *cfd) {
 
 		char *body = strstr(req_buffer, "\r\n\r\n");
 
-		if (body == NULL) {
-			snprintf(res, sizeof(res), "%s", res_bad_request);
+		if (!body) {
+			snprintf(res, sizeof(res), "%s", res_ok);
 		} else {
 			body += 4;
 			FILE *file_fd = fopen(f_path, "w");
