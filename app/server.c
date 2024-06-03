@@ -40,7 +40,7 @@ void *request_handler(void *cfd) {
 
 		char *body = strstr(req_buffer, "\r\n\r\n");
 
-		if (!body) {
+		if (body == NULL) {
 			snprintf(res, sizeof(res), "%s", res_bad_request);
 		} else {
 			body += 4;
