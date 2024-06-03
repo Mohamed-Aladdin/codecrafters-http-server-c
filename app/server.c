@@ -41,7 +41,7 @@ void *request_handler(void *cfd) {
 
 		char *body = strstr(req_buffer, "\r\n\r\n");
 
-		if (body == NULL) {
+		if (!body) {
 			snprintf(res, sizeof(res), "%s", res_bad_request);
 		} else {
 			body += 4;
@@ -52,6 +52,7 @@ void *request_handler(void *cfd) {
 				fclose(file_fd);
 				snprintf(res, sizeof(res), "%s", res_created);
 			} else {
+				printf(Hoiiiiiiiiiiiiiiiiiii);
 				snprintf(res, sizeof(res), "%s", res_not_found);
 			}
 		}
