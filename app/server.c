@@ -28,6 +28,7 @@ void *request_handler(void *cfd) {
 	char *path = strtok(NULL, " ");
 	path = strtok(NULL, " ");
 	char *res_ok = "HTTP/1.1 200 OK\r\n\r\n";
+	char *res_created = "HTTP/1.1 201 Created\r\n\r\n";
 	char *res_not_found = "HTTP/1.1 404 Not Found\r\n\r\n";
 	char *res_bad_request = "HTTP/1.1 400 Bad Request\r\n\r\n";
 	char *format =
@@ -50,7 +51,7 @@ void *request_handler(void *cfd) {
 				if (file_fd) {
 					fwrite(body, 1, strlen(body), file_fd);
 					fclose(file_fd);
-					snprintf(res, sizeof(res), "%s", res_ok);
+					snprintf(res, sizeof(res), "%s", res_created);
 				} else {
 					snprintf(res, sizeof(res), "%s", res_not_found);
 				}
