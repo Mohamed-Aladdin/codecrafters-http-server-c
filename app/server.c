@@ -24,6 +24,8 @@ void *request_handler(void *cfd) {
 		printf("Request from client: %s\n", req_buffer);
 	}
 
+	printf("Original ReqBuffer: %s\n", req_buffer);
+
 	char *method = strtok(req_buffer, " ");
 	char *path = strtok(NULL, " ");
 	char *res_ok = "HTTP/1.1 200 OK\r\n\r\n";
@@ -39,7 +41,7 @@ void *request_handler(void *cfd) {
 		snprintf(f_path, sizeof(f_path), "%s/%s", dir, file);
 
 		char *body = strstr(req_buffer, "\r\n\r\n");
-		printf("ReqBuffer: %s\nMethod: %s\nPath: %s\nBody: %s\n", req_buffer[0], method, path, body);
+		printf("ReqBuffer: %s\nMethod: %s\nPath: %s\nBody: %s\n", req_buffer, method, path, body);
 
 		if (!body) {
 			snprintf(res, sizeof(res), "%s", res_bad_request);
