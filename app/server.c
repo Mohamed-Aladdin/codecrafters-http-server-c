@@ -24,41 +24,66 @@ void *request_handler(void *cfd) {
 		printf("Request from client: %s\n", req_buffer);
 	}
 
-	char *path = strtok(req_buffer, " ");
+	char *method = strtok(req_buffer, " ");
+	char *path = strtok(NULL, " ");
 	path = strtok(NULL, " ");
 	char *res_ok = "HTTP/1.1 200 OK\r\n\r\n";
 	char *res_not_found = "HTTP/1.1 404 Not Found\r\n\r\n";
+	char *res_bad_request = "HTTP/1.1 400 Bad Request\r\n\r\n";
 	char *format =
 		"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
 		"%ld\r\n\r\n%s";
 	if (strncmp(path, "/files/", 7) == 0) {
-		char *file = strchr(path + 1, '/');
-
-		if (file) {
+		if (strncmp(method, "POST", 4) == 0) {
+			char *file = path + 7;
 			char f_path[BUFFER_SIZE];
-			snprintf(f_path, sizeof(f_path), "%s%s", dir, file);
-			FILE *file_fd = fopen(f_path, "r");
+			snprintf(f_path, sizeof(f_path), "%s/%s", dir, file);
 
-			if (file_fd) {
-				char file_buff[BUFFER_SIZE];
-				int br = fread(file_buff, 1, BUFFER_SIZE - 1, file_fd);
-				file_buff[br] = '\0';
-				fclose(file_fd);
+			char *body = strstr(req_buffer, "\r\n\r\n");
 
-				int res_size = snprintf(res, sizeof(res),
-            				"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: "
-            				"%d\r\n\r\n%s",
-            				br, file_buff);
-				if (res_size >= sizeof(res)) {
-					fprintf(stderr, "Response buffer overflow detected\n");
-					close(client_fd);
-					return NULL;
+			if (!body) {
+				snprintf(res, sizeof(res), "%s", res_bad_request);
+			} else {
+				body += 4;
+				FILE *file_fd = fopen(f_path, "w");
+
+				if (file_fd) {
+					fwrite(body, 1, strlen(body), file_fd);
+					fclose(file_fd);
+					snprintf(res, sizeof(res), "%s", res_ok);
+				} else {
+					snprintf(res, sizeof(res), "%s", res_not_found);
+				}
+			}
+		} else {
+			char *file = strchr(path + 1, '/');
+
+			if (file) {
+				char f_path[BUFFER_SIZE];
+				snprintf(f_path, sizeof(f_path), "%s%s", dir, file);
+				FILE *file_fd = fopen(f_path, "r");
+
+				if (file_fd) {
+					char file_buff[BUFFER_SIZE];
+					int br = fread(file_buff, 1, BUFFER_SIZE - 1, file_fd);
+					file_buff[br] = '\0';
+					fclose(file_fd);
+
+					int res_size = snprintf(res, sizeof(res),
+            					"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: "
+            					"%d\r\n\r\n%s",
+            					br, file_buff);
+					if (res_size >= sizeof(res)) {
+						fprintf(stderr, "Response buffer overflow detected\n");
+						close(client_fd);
+						return NULL;
+					}
+				} else {
+					snprintf(res, sizeof(res), "%s", res_not_found);
 				}
 			} else {
 				snprintf(res, sizeof(res), "%s", res_not_found);
 			}
-		} else {
-			snprintf(res, sizeof(res), "%s", res_not_found);
 		}
 	} else if (strncmp(path, "/user-agent", 11) == 0) {
 		strtok(0, "\r\n");
