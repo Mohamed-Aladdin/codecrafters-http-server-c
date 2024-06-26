@@ -22,7 +22,7 @@ void *request_handler(void *cfd) {
 		printf("Read failed: %s \n", strerror(errno));
 		return NULL;
 	} else {
-		strncpy(request_buffer, buffer,BUFFER_SIZE - 1);
+		strncpy(req_buffer, buffer,BUFFER_SIZE - 1);
 		req_buffer[BUFFER_SIZE - 1] = '\0';
 		printf("Request from client: %s\n", req_buffer);
 	}
