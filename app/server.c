@@ -24,7 +24,7 @@ void *request_handler(void *cfd) {
 		printf("Request from client: %s\n", req_buffer);
 	}
 
-	char *header = strstr(req_buffer, "\r\n\r\n");
+	char *headers = strstr(req_buffer, "\r\n\r\n");
 	char *method = strtok(req_buffer, " ");
 	char *path = strtok(NULL, " ");
 	char *res_ok = "HTTP/1.1 200 OK\r\n\r\n";
