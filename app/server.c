@@ -24,7 +24,7 @@ void *request_handler(void *cfd) {
 		printf("Request from client: %s\n", req_buffer);
 	}
 
-	char *headers = strstr(req_buffer, "\r\n\r\n") + 4;
+	char *body = strstr(req_buffer, "\r\n\r\n") + 4;
 	char *method = strtok(req_buffer, " ");
 	char *path = strtok(NULL, " ");
 	char *res_ok = "HTTP/1.1 200 OK\r\n\r\n";
@@ -41,40 +41,18 @@ void *request_handler(void *cfd) {
 		snprintf(f_path, sizeof(f_path), "%s/%s", dir, file);
 
 		// Read headers to get Content-Length
-		printf("Headers: %s, ReqBuff: %s", headers, req_buffer);
-		if (!headers) {
+		printf("Body: %s, ReqBuff: %s", body, req_buffer);
+		if (!body) {
 			snprintf(res, sizeof(res), "%s", res_bad_request);
 			send(client_fd, res, strlen(res), 0);
 			close(client_fd);
 			return NULL;
 		}
 
-		int content_length = 0;
-		char *content_length_str = strstr(req_buffer, "Content-Length: ");
-		if (content_length_str)
-			sscanf(content_length_str, "Content-Length: %d", &content_length);
-
-		// Read the body
-		char body[BUFFER_SIZE];
-		int total_bytes_read = 0;
-		int bytes_to_read = content_length;
-		while (bytes_to_read > 0) {
-			int bytes_read = read(client_fd, body + total_bytes_read, bytes_to_read);
-			if (bytes_read <= 0) {
-				printf("Error reading body: %s\n", strerror(errno));
-				close(client_fd);
-				return NULL;
-			}
-			total_bytes_read += bytes_read;
-			bytes_to_read -= bytes_read;
-		}
-
-		body[total_bytes_read] = '\0';
-
 		FILE *file_fd = fopen(f_path, "w");
 
 		if (file_fd) {
-			fwrite(body, 1, total_bytes_read, file_fd);
+			fwrite(body, 1, strlen(body), file_fd);
 			fclose(file_fd);
 			snprintf(res, sizeof(res), "%s", res_created);
 		} else {
