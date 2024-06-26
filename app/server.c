@@ -76,7 +76,7 @@ void *request_handler(void *cfd) {
 			FILE *file_fd = fopen(f_path, "w");
 
 			if (file_fd) {
-				fwrite(body, 1, strlen(body), file_fd);
+				fwrite(body, 1, total_bytes_read, file_fd);
 				fclose(file_fd);
 				snprintf(res, sizeof(res), "%s", res_created);
 			} else {
