@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include <pthread.h>
 
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 4096
 
 char *dir;
 
