@@ -26,7 +26,6 @@ void *request_handler(void *cfd) {
 
 	char *method = strtok(req_buffer, " ");
 	char *path = strtok(NULL, " ");
-	char *version = strtok(NULL, "\r\n");
 	char *res_ok = "HTTP/1.1 200 OK\r\n\r\n";
 	char *res_created = "HTTP/1.1 201 Created\r\n\r\n";
 	char *res_not_found = "HTTP/1.1 404 Not Found\r\n\r\n";
@@ -39,7 +38,6 @@ void *request_handler(void *cfd) {
 		char *file = path + 7;
 		char f_path[BUFFER_SIZE];
 		snprintf(f_path, sizeof(f_path), "%s/%s", dir, file);
-		printf("ReqBuffer: %s", req_buffer);
 
 		// Read headers to get Content-Length
 		char *headers = strstr(req_buffer, "\r\n\r\n");
