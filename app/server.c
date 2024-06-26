@@ -39,6 +39,7 @@ void *request_handler(void *cfd) {
 		char *file = path + 7;
 		char f_path[BUFFER_SIZE];
 		snprintf(f_path, sizeof(f_path), "%s/%s", dir, file);
+		printf("ReqBuffer: %s", req_buffer);
 
 		// Read headers to get Content-Length
 		char *headers = strstr(req_buffer, "\r\n\r\n");
