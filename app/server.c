@@ -42,7 +42,7 @@ void *request_handler(void *cfd) {
 
 		// Read headers to get Content-Length
 		char *headers = strstr(req_buffer, "\r\n\r\n");
-		printf("Headers: %s", headers);
+		printf("Headers: %s, ReqBuff: %s", headers, req_buffer);
 		if (!headers) {
 			snprintf(res, sizeof(res), "%s", res_bad_request);
 			send(client_fd, res, strlen(res), 0);
