@@ -14,7 +14,7 @@ char *dir;
 
 void *request_handler(void *cfd) {
 	int client_fd = *(int*)cfd;
-	char buf[BUFFER_SIZE];
+	char buffer[BUFFER_SIZE];
 	char req_buffer[BUFFER_SIZE];
 	char res[BUFFER_SIZE];
 
