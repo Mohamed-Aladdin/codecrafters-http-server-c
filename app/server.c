@@ -24,6 +24,7 @@ void *request_handler(void *cfd) {
 		printf("Request from client: %s\n", req_buffer);
 	}
 
+	char *header = strstr(req_buffer, "\r\n\r\n");
 	char *method = strtok(req_buffer, " ");
 	char *path = strtok(NULL, " ");
 	char *res_ok = "HTTP/1.1 200 OK\r\n\r\n";
@@ -40,7 +41,7 @@ void *request_handler(void *cfd) {
 		snprintf(f_path, sizeof(f_path), "%s/%s", dir, file);
 
 		// Read headers to get Content-Length
-		char *headers = strtok(NULL, "\r\n\r");
+		// char *headers = strtok(NULL, "\r\n\r");
 		printf("Headers: %s, ReqBuff: %s", headers, req_buffer);
 		if (!headers) {
 			snprintf(res, sizeof(res), "%s", res_bad_request);
