@@ -17,7 +17,7 @@ void *request_handler(void *cfd) {
 	char req_buffer[BUFFER_SIZE];
 	char res[BUFFER_SIZE];
 
-	if (read(client_fd, buffer, BUFFER_SIZE) < 0) {
+	if (read(client_fd, req_buffer, BUFFER_SIZE) < 0) {
 		printf("Read failed: %s \n", strerror(errno));
 		return NULL;
 	} else {
