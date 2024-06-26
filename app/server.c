@@ -41,7 +41,7 @@ void *request_handler(void *cfd) {
 		snprintf(f_path, sizeof(f_path), "%s/%s", dir, file);
 
 		// Read headers to get Content-Length
-		char *headers = strtok(NULL, "application/octet-stream");
+		char *headers = strtok(NULL, "\r\n\r\n");
 		printf("Headers: %s, ReqBuff: %s", headers, req_buffer);
 		if (!headers) {
 			snprintf(res, sizeof(res), "%s", res_bad_request);
