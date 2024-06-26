@@ -38,13 +38,41 @@ void *request_handler(void *cfd) {
 		char f_path[BUFFER_SIZE];
 		snprintf(f_path, sizeof(f_path), "%s/%s", dir, file);
 
-		char *body = strstr(req_buffer, "\r\n\r\n");
-		printf("ReqBuffer: %s\nMethod: %s\nPath: %s\nBody: %s\n", req_buffer, method, path, body);
+		// Read headers to get Content-Length
+		char *headers = strstr(req_buffer, "\r\n\r\n");
+		if (!headers) {
+			snprintf(res, sizeof(res), "%s", res_bad_request);
+			send(client_fd, res, strlen(res), 0);
+			close(client_fd);
+			return NULL;
+		}
+
+		headers += 4;
+		int content_length = 0;
+		char *content_length_str = strstr(req_buffer, "Content-Length: ");
+		if (content_length_str)
+			sscanf(content_length_str, "Content-Length: %d", &content_length);
+
+		// Read the body
+		char body[BUFFER_SIZE];
+		int total_bytes_read = 0;
+		int bytes_to_read = content_length;
+		while (bytes_to_read > 0) {
+			int bytes_read = read(client_fd, body + total_bytes_read, bytes_to_read);
+			if (bytes_read <= 0) {
+				printf("Error reading body: %s\n", strerror(errno));
+				close(client_fd);
+				return NULL;
+			}
+			total_bytes_read += bytes_read;
+			bytes_to_read -= bytes_read;
+		}
+
+		body[total_bytes_read] = '\0';
 
 		if (!body) {
 			snprintf(res, sizeof(res), "%s", res_bad_request);
 		} else {
-			body += 4;
 			FILE *file_fd = fopen(f_path, "w");
 
 			if (file_fd) {
