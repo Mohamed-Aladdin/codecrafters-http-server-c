@@ -30,6 +30,7 @@ void *request_handler(void *cfd) {
 	char *res_created = "HTTP/1.1 201 Created\r\n\r\n";
 	char *res_not_found = "HTTP/1.1 404 Not Found\r\n\r\n";
 	char *res_bad_request = "HTTP/1.1 400 Bad Request\r\n\r\n";
+	char *res_srvr_err = "HTTP/1.1 500 Internal Server Error\r\n\r\n";
 	char *format =
 		"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
 		"%ld\r\n\r\n%s";
@@ -70,18 +71,14 @@ void *request_handler(void *cfd) {
 
 		body[total_bytes_read] = '\0';
 
-		if (!body) {
-			snprintf(res, sizeof(res), "%s", res_bad_request);
-		} else {
-			FILE *file_fd = fopen(f_path, "w");
+		FILE *file_fd = fopen(f_path, "w");
 
-			if (file_fd) {
-				fwrite(body, 1, total_bytes_read, file_fd);
-				fclose(file_fd);
-				snprintf(res, sizeof(res), "%s", res_created);
-			} else {
-				snprintf(res, sizeof(res), "%s", res_not_found);
-			}
+		if (file_fd) {
+			fwrite(body, 1, total_bytes_read, file_fd);
+			fclose(file_fd);
+			snprintf(res, sizeof(res), "%s", res_created);
+		} else {
+			snprintf(res, sizeof(res), "%s", res_srvr_err);
 		}
 	} else if (strncmp(path, "/files/", 7) == 0 && strncmp(method, "GET", 3) == 0) {
 		char *file = strchr(path + 1, '/');
