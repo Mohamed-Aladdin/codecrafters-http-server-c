@@ -8,12 +8,13 @@
 #include <unistd.h>
 #include <pthread.h>
 
-#define BUFFER_SIZE 4096
+#define BUFFER_SIZE 1024
 
 char *dir;
 
 void *request_handler(void *cfd) {
 	int client_fd = *(int*)cfd;
+	char buf[BUFFER_SIZE];
 	char req_buffer[BUFFER_SIZE];
 	char res[BUFFER_SIZE];
 
@@ -21,6 +22,8 @@ void *request_handler(void *cfd) {
 		printf("Read failed: %s \n", strerror(errno));
 		return NULL;
 	} else {
+		strncpy(request_buffer, buffer,BUFFER_SIZE - 1);
+		req_buffer[BUFFER_SIZE - 1] = '\0';
 		printf("Request from client: %s\n", req_buffer);
 	}
 
