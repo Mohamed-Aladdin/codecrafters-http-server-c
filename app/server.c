@@ -26,7 +26,7 @@ void *request_handler(void *cfd) {
 
 	char *method = strtok(req_buffer, " ");
 	char *path = strtok(NULL, " ");
-	char *version = strtok(NULL, "\r\n");
+	char *version = strtok(NULL, " ");
 	printf("version: %s", version);
 	char *res_ok = "HTTP/1.1 200 OK\r\n\r\n";
 	char *res_created = "HTTP/1.1 201 Created\r\n\r\n";
