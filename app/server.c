@@ -60,6 +60,7 @@ void *request_handler(void *cfd) {
 		}
 	} else if (strncmp(path, "/files/", 7) == 0 && strncmp(method, "GET", 3) == 0) {
 		char *file = strchr(path + 1, '/');
+		printf("Filename: %s\n", file);
 
 		if (file) {
 			char f_path[BUFFER_SIZE];
@@ -105,6 +106,8 @@ void *request_handler(void *cfd) {
 	if (bytes_sent < 0) {
 		printf("Error: %s \n", strerror(errno));
 	}
+
+	close(client_fd);
 }
 
 int main(int argc, char **argv) {
