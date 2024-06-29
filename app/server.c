@@ -25,6 +25,7 @@ void *request_handler(void *cfd) {
 	}
 
 	char *body = strstr(req_buffer, "\r\n\r\n") + 4;
+	char *accept_encoding = strstr(req_buffer, "Accept-Encoding: ");
 	char *method = strtok(req_buffer, " ");
 	char *path = strtok(NULL, " ");
 	char *res_ok = "HTTP/1.1 200 OK\r\n\r\n";
@@ -35,6 +36,15 @@ void *request_handler(void *cfd) {
 	char *format =
 		"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
 		"%ld\r\n\r\n%s";
+
+	int gzip_accepted = 0;
+	if (accept_encoding) {
+		char *encoding_value = strtok(accept_encoding + strlen("Accept-Encoding: "), "\r\n");
+		if (encoding_value && strstr(encoding_value, "gzip")) {
+			gzip_accepted = 1;
+		}
+	}
+
 	if (strncmp(path, "/files/", 7) == 0 && strncmp(method, "POST", 4) == 0) {
 		char *file = path + 7;
 		char f_path[BUFFER_SIZE];
@@ -95,7 +105,12 @@ void *request_handler(void *cfd) {
 		sprintf(res, format, strlen(userAgent), userAgent);
 	} else if (strncmp(path, "/echo/", 6) == 0) {
 		char *content = path + 6;
-		sprintf(res, format, strlen(content), content);
+		if (gzip_accepted) {
+			snprintf(res, sizeof(res),
+				"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip\r\nContent-Length: %ld\r\n\r\n%s", strlen(content), content);
+		} else {
+			sprintf(res, format, strlen(content), content);
+		}
 	} else {
 		snprintf(res, sizeof(res), "%s",
 			(strcmp(path, "/") == 0) ? res_ok : res_not_found);
