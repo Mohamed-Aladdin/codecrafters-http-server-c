@@ -111,8 +111,7 @@ void *request_handler(void *cfd) {
 			uLong source_len = strlen(content);
 			uLong dest_len = compressBound(source_len);
 			char compressed_content[BUFFER_SIZE];
-			if (compress2((Bytef*)compressed_content, &dest_len, (Bytef*)content,
-				source_len, Z_BEST_COMPRESSION) != Z_OK) {
+			if (compress2((Bytef*)compressed_content, &dest_len, (Bytef*)content, source_len, Z_BEST_COMPRESSION) != Z_OK) {
 				snprintf(res, sizeof(res), "%s", res_srvr_err);
 			} else {
 				snprintf(res, sizeof(res),
