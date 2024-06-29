@@ -107,27 +107,8 @@ void *request_handler(void *cfd) {
 	} else if (strncmp(path, "/echo/", 6) == 0) {
 		char *content = path + 6;
 		if (gzip_accepted) {
-			// Compress the content with gzip
-			uLong source_len = strlen(content);
-			uLong dest_len = compressBound(source_len);
-			char compressed_content[BUFFER_SIZE];
-			if (compress2((Bytef*)compressed_content, &dest_len, (Bytef*)content, source_len, Z_BEST_COMPRESSION) != Z_OK) {
-				snprintf(res, sizeof(res), "%s", res_srvr_err);
-			} else {
-				printf("Original content: %s\n", content);
-				printf("Compressed content (hex): ");
-				for (int i = 0; i < dest_len; i++) {
-					printf("%02x ", (unsigned char)compressed_content[i]);
-				}
-				printf("\n");
-				snprintf(res, sizeof(res),
-						 "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip\r\nContent-Length: %lu\r\n\r\n", dest_len);
-				send(client_fd, res, strlen(res), 0);
-				send(client_fd, compressed_content, dest_len, 0);
-				close(client_fd);
-				free(cfd);
-				return NULL;
-			}
+			snprintf(res, sizeof(res),
+				"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip\r\nContent-Length: %ld\r\n\r\n%s", strlen(content), content);
 		} else {
 			sprintf(res, format, strlen(content), content);
 		}
