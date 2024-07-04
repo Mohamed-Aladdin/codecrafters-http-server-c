@@ -18,6 +18,7 @@ void *request_handler(void *cfd) {
 	char req_buffer[BUFFER_SIZE];
 	char res[BUFFER_SIZE];
 
+	// If read is failed we print the error and exit
 	if (read(client_fd, req_buffer, BUFFER_SIZE) < 0) {
 		printf("Read failed: %s \n", strerror(errno));
 		return NULL;
@@ -38,6 +39,7 @@ void *request_handler(void *cfd) {
 		"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
 		"%ld\r\n\r\n%s";
 
+	// Flag to check and store whether encoding's been provided or not
 	int gzip_accepted = 0;
 	if (accept_encoding) {
 		char *encoding_value = strtok(accept_encoding + strlen("Accept-Encoding: "), "\r\n");
@@ -46,6 +48,7 @@ void *request_handler(void *cfd) {
 		}
 	}
 
+	// Logic behind different request formats
 	if (strncmp(path, "/files/", 7) == 0 && strncmp(method, "POST", 4) == 0) {
 		char *file = path + 7;
 		char f_path[BUFFER_SIZE];
@@ -173,6 +176,7 @@ int main(int argc, char **argv) {
 
 	printf("Waiting for a client to connect...\n");
 
+	// While loop allows the pthread library to function and handle concurrent sessions
 	while (1) {
 			client_addr_len = sizeof(client_addr);
 			int *client_fd = malloc(sizeof(int));
