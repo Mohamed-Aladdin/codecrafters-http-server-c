@@ -130,6 +130,36 @@ void *request_handler(void *cfd) {
 }
 
 int main(int argc, char **argv) {
+	const char *welcome =
+	"                                                                                                  \n"
+	"                                                                                                  \n"
+	"   SSSSSSSSSSSSSSS                                                                                \n"
+	" SS:::::::::::::::S                                                                               \n"
+	"S:::::SSSSSS::::::S                                                                               \n"
+	"S:::::S     SSSSSSS                                                                               \n"
+	"S:::::S                eeeeeeeeeeee    rrrrr   rrrrrrrrrvvvvvvv           vvvvvvv eeeeeeeeeeee    \n"
+	"S:::::S              ee::::::::::::ee  r::::rrr:::::::::rv:::::v         v:::::vee::::::::::::ee  \n"
+	" S::::SSSS          e::::::eeeee:::::eer:::::::::::::::::rv:::::v       v:::::ve::::::eeeee:::::ee\n"
+	"  SS::::::SSSSS    e::::::e     e:::::err::::::rrrrr::::::rv:::::v     v:::::ve::::::e     e:::::e\n"
+	"    SSS::::::::SS  e:::::::eeeee::::::e r:::::r     r:::::r v:::::v   v:::::v e:::::::eeeee::::::e\n"
+	"       SSSSSS::::S e:::::::::::::::::e  r:::::r     rrrrrrr  v:::::v v:::::v  e:::::::::::::::::e \n"
+	"            S:::::Se::::::eeeeeeeeeee   r:::::r               v:::::v:::::v   e::::::eeeeeeeeeee  \n"
+	"            S:::::Se:::::::e            r:::::r                v:::::::::v    e:::::::e           \n"
+	"SSSSSSS     S:::::Se::::::::e           r:::::r                 v:::::::v     e::::::::e          \n"
+	"S::::::SSSSSS:::::S e::::::::eeeeeeee   r:::::r                  v:::::v       e::::::::eeeeeeee  \n"
+	"S:::::::::::::::SS   ee:::::::::::::e   r:::::r                   v:::v         ee:::::::::::::e  \n"
+	" SSSSSSSSSSSSSSS       eeeeeeeeeeeeee   rrrrrrr                    vvv            eeeeeeeeeeeeee  \n"
+	"                                                                                                  \n"
+	"                                                                                                  \n"
+	"                                                                                                  \n"
+	"                                                                                                  \n"
+	"                                                                                                  \n"
+	"                                                                                                  \n";
+
+
+	// Print the ASCII art
+	printf("%s", welcome);
+
 	if (argc >= 2 && (strncmp(argv[1], "--directory", 11) == 0)) {
 		dir = argv[2];
 	}
