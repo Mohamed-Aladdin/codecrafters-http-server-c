@@ -53,7 +53,7 @@ Contributions are welcome! Please follow these steps to contribute:
 
 ## Related Projects
 Here are some related projects that you might find interesting:
-**Codecrafter's HTTP Server:** [https://app.codecrafters.io/courses/http-server](#)
+**Codecrafter's HTTP Server:** [CodeCrafters](https://app.codecrafters.io/courses/http-server)
 
 ## Licensing
 This project is licensed under the MIT License. See the LICENSE file for more details.
