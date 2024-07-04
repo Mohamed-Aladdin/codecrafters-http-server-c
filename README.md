@@ -28,7 +28,7 @@ To set up the project locally, follow these steps:
 ## Usage
 To run the server, use the following command:
    ```sh
-   ./server --directory <directory_path>
+   ./server --directory <directory_path>	
 
 Replace <directory_path> with the path to the directory where your files are stored.
 ### Example:
