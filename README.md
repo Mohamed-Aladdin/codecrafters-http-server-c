@@ -2,6 +2,8 @@
 
 [![progress-banner](https://backend.codecrafters.io/progress/http-server/8e39bac6-a5f3-477c-b318-ff8002e37bef)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
 
+![image](https://github.com/Mohamed-Aladdin/codecrafters-http-server-c/assets/36533819/7d96d724-bc22-4ddb-8d5b-41974bb6e10e)
+
 ## Introduction
 This project is a custom HTTP server implemented in C that supports gzip compression. The server is designed to handle HTTP requests, respond with appropriate content, and compress responses using gzip when requested by the client. The main goal of this project is to demonstrate the implementation of HTTP protocols, multi-threading, and data compression techniques.
 
