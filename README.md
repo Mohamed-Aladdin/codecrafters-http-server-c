@@ -27,18 +27,18 @@ To set up the project locally, follow these steps:
 
 ## Usage
 To run the server, use the following command:
-```sh
-./server --directory <directory_path>
+   ```sh
+   ./server --directory <directory_path>
 
 Replace <directory_path> with the path to the directory where your files are stored.
 ### Example:
-```sh
-./server --directory /var/www/html
+   ```sh
+   ./server --directory /var/www/html
 
 ## Making Requests:
 To test the server, you can use curl or any other HTTP client. For example:
-```sh
-curl -v -H "Accept-Encoding: gzip" http://localhost:4221/echo/abc
+   ```sh
+   curl -v -H "Accept-Encoding: gzip" http://localhost:4221/echo/abc
 
 ## Contributing
 Contributions are welcome! Please follow these steps to contribute:
