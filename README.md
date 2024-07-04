@@ -1,6 +1,6 @@
-[![progress-banner](https://backend.codecrafters.io/progress/http-server/8e39bac6-a5f3-477c-b318-ff8002e37bef)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
-
 # Serve (HTTP Server with headers compression)
+
+[![progress-banner](https://backend.codecrafters.io/progress/http-server/8e39bac6-a5f3-477c-b318-ff8002e37bef)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
 
 ## Introduction
 This project is a custom HTTP server implemented in C that supports gzip compression. The server is designed to handle HTTP requests, respond with appropriate content, and compress responses using gzip when requested by the client. The main goal of this project is to demonstrate the implementation of HTTP protocols, multi-threading, and data compression techniques.
@@ -25,20 +25,22 @@ To set up the project locally, follow these steps:
    ```sh
    gcc -o server app/server.c -pthread -lz
 
-Usage
+## Usage
 To run the server, use the following command:
 ```sh
 ./server --directory <directory_path>
+
 Replace <directory_path> with the path to the directory where your files are stored.
+### Example:
 ```sh
 ./server --directory /var/www/html
 
-Making Requests:
+## Making Requests:
 To test the server, you can use curl or any other HTTP client. For example:
 ```sh
 curl -v -H "Accept-Encoding: gzip" http://localhost:4221/echo/abc
 
-Contributing
+## Contributing
 Contributions are welcome! Please follow these steps to contribute:
 
 1. Fork the repository.
@@ -47,11 +49,11 @@ Contributions are welcome! Please follow these steps to contribute:
 4. Push to the branch (git push origin feature/your-feature).
 5. Open a pull request.
 
-Related Projects
+## Related Projects
 Here are some related projects that you might find interesting:
 **Codecrafter's HTTP Server:** [https://app.codecrafters.io/courses/http-server](#)
 
-Licensing
+## Licensing
 This project is licensed under the MIT License. See the LICENSE file for more details.
 
 This `README.md` provides a comprehensive guide for users and contributors.
