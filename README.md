@@ -5,8 +5,8 @@
 ## Introduction
 This project is a custom HTTP server implemented in C that supports gzip compression. The server is designed to handle HTTP requests, respond with appropriate content, and compress responses using gzip when requested by the client. The main goal of this project is to demonstrate the implementation of HTTP protocols, multi-threading, and data compression techniques.
 
-- **Deployed Site:** [https://mohamed-aladdin.github.io/codecrafters-http-server-c/](#)
-- **Project Blog Article:** [Final Project Blog Article](#) <!-- Replace with actual link -->
+- **Deployed Site:** [Serve](https://mohamed-aladdin.github.io/codecrafters-http-server-c/)
+- **Project Blog Article:** [Blog Article](#)
 - **Author(s) LinkedIn:**
   - [Mohamed Aladdin](https://www.linkedin.com/in/m-aladdin101)
 
@@ -28,7 +28,7 @@ To set up the project locally, follow these steps:
 ## Usage
 To run the server, use the following command:
    ```sh
-   ./server --directory <directory_path>	
+   ./server --directory <directory_path>
 
 Replace <directory_path> with the path to the directory where your files are stored.
 ### Example:
